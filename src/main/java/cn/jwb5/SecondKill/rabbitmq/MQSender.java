@@ -1,5 +1,7 @@
 package cn.jwb5.SecondKill.rabbitmq;
 
+import cn.jwb5.SecondKill.VO.MiaoShaVO;
+import cn.jwb5.SecondKill.redis.RedisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -19,6 +21,9 @@ public class MQSender {
 
     @Autowired
     AmqpTemplate amqpTemplate;
+
+    @Autowired
+    RedisService redisService;
 
 
     public void sendMsg(String msg){
@@ -47,6 +52,11 @@ public class MQSender {
         Message obj = new Message(msg.getBytes(),mp);
         amqpTemplate.convertAndSend(RabbitCfg.HEADERS_EXCHANGER,"",obj);
 
+    }
+
+    public void sendMsg2MiaoshaQue(MiaoShaVO miaoShaVO){
+        String msg = redisService.bean2String(miaoShaVO);
+        amqpTemplate.convertAndSend(RabbitCfg.MIAOSHAQUEUE,msg);
     }
 
 

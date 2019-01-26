@@ -1,8 +1,10 @@
 package cn.jwb5.SecondKill.service;
 
 import cn.jwb5.SecondKill.VO.GoodsVo;
+import cn.jwb5.SecondKill.VO.MiaoShaVO;
 import cn.jwb5.SecondKill.model.OrderInfo;
 import cn.jwb5.SecondKill.model.User;
+import cn.jwb5.SecondKill.rabbitmq.MQSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,14 +20,27 @@ public class MiaoshaService {
     @Autowired
     OrderService orderService;
 
+    @Autowired
+    MQSender mqSender;
+
 
     @Transactional
-    public OrderInfo miaosha(User user,GoodsVo goodsVo){
+    public void miaosha(User user,long goodId){
+        MiaoShaVO miaoShaVO = new MiaoShaVO();
+        miaoShaVO.setUser(user);
+        miaoShaVO.setGoodsId(goodId);
+        mqSender.sendMsg2MiaoshaQue(miaoShaVO);
+    }
+
+    @Transactional
+    public OrderInfo miaosha(MiaoShaVO miaoShaVO){
 
         //减库存
-        goodsService.reduceGoodsCount(goodsVo.getId());
-
-        return orderService.createOrder(user,goodsVo);
+        goodsService.reduceGoodsCount(miaoShaVO.getGoodsId());
+        return orderService.createOrder(miaoShaVO.getUser(),miaoShaVO.getGoodsId());
 
     }
+
+
+
 }

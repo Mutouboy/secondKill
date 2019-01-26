@@ -31,7 +31,7 @@ public class RedisService {
 
     }
 
-    private  <T> T string2Bean(String str,Class<T> clazz){
+    public  <T> T string2Bean(String str,Class<T> clazz){
         if (StringUtils.isEmpty(str) || clazz==null){
             return null;
         }
@@ -79,7 +79,7 @@ public class RedisService {
 
     }
 
-    private<T> String bean2String(T value){
+    public <T> String bean2String(T value){
         if (value == null){
             return null;
         }

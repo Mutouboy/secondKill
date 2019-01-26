@@ -27,6 +27,20 @@ public class TestController {
     @Autowired
     MQSender mqSender;
 
+
+    @RequestMapping("reset")
+    @ResponseBody
+    public Result reset(){
+        boolean t = testService.reset();
+        if (t){
+            return Result.setError(ErrorMsg.SUCCESS);
+        }
+        else {
+            return Result.setError(ErrorMsg.SYSTEM_ERROR);
+        }
+    }
+
+
     @RequestMapping("create")
     @ResponseBody
     public Result createUser(){

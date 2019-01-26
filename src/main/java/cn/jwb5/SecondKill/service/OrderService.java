@@ -20,6 +20,9 @@ public class OrderService {
     @Autowired
     OrderDao orderDao;
 
+    @Autowired
+    GoodsService goodsService;
+
     public long insertOrder(OrderInfo orderInfo) {
         return orderDao.insertOrder(orderInfo);
     }
@@ -35,7 +38,8 @@ public class OrderService {
 
 
     @Transactional
-    public OrderInfo createOrder(User user, GoodsVo goodsVo) {
+    public OrderInfo createOrder(User user, long goodId) {
+        GoodsVo goodsVo = goodsService.getGoodByGoodsId(goodId);
         OrderInfo orderInfo = new OrderInfo();
         MiaoshaOrder miaoshaOrder = new MiaoshaOrder();
 
@@ -49,12 +53,13 @@ public class OrderService {
         orderInfo.setGoodsPrice(goodsVo.getMiaoshaPrice());
         orderInfo.setGoodsCount(1);
 
-        long orderId = insertOrder(orderInfo);
+        insertOrder(orderInfo);
 
         miaoshaOrder.setUserId(Long.valueOf(user.getId()));
         miaoshaOrder.setGoodsId(goodsVo.getId());
-        miaoshaOrder.setOrderId(orderId);
+        miaoshaOrder.setOrderId(orderInfo.getId());
 
+        //重复秒杀会异常，因为唯一约束
         int result = insertMiaoshaOrder(miaoshaOrder);
 
         return orderInfo;

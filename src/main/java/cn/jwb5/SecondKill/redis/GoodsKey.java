@@ -16,4 +16,6 @@ public class GoodsKey extends BasePrefix {
     private static final int GoodsKeyExpireTime = 3600;
 
     public static final GoodsKey byId = new GoodsKey(GoodsKeyExpireTime,"gid");
+
+    public static final GoodsKey miaoshaById = new GoodsKey(0,"msgid");
 }

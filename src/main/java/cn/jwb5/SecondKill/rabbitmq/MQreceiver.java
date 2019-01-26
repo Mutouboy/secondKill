@@ -1,8 +1,12 @@
 package cn.jwb5.SecondKill.rabbitmq;
 
+import cn.jwb5.SecondKill.VO.MiaoShaVO;
+import cn.jwb5.SecondKill.redis.RedisService;
+import cn.jwb5.SecondKill.service.MiaoshaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -10,6 +14,12 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class MQreceiver {
+
+    @Autowired
+    MiaoshaService miaoshaService;
+
+    @Autowired
+    RedisService redisService;
 
     private static Logger log = LoggerFactory.getLogger(MQreceiver.class);
 
@@ -33,5 +43,10 @@ public class MQreceiver {
         log.info("receive headers"+new String(msg));
     }
 
+    @RabbitListener(queues = RabbitCfg.MIAOSHAQUEUE)
+    public void receive4(String msg){
+        MiaoShaVO miaoShaVO = redisService.string2Bean(msg, MiaoShaVO.class);
+        miaoshaService.miaosha(miaoShaVO);
+    }
 
 }

@@ -96,5 +96,11 @@ public class RabbitCfg {
 
 
 
+    public static final String MIAOSHAQUEUE = "miaoshaqueue";
+
+    @Bean
+    public Queue getMiaoshaQueue(){
+        return new Queue(MIAOSHAQUEUE);
+    }
 
 }

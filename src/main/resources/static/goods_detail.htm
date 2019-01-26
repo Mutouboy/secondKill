@@ -45,9 +45,9 @@
                 <span id="ms_end">秒杀已结束</span>
             </td>
             <td>
-                <form id="miaoshaForm" method="post" action="/miaosha/do_miaosha">
-                    <button class="btn btn-primary btn-block" type="submit" id="buyButton">立即秒杀</button>
-                    <input type="hidden" name="goodsId"/>
+                <form id="miaoshaForm" action="">
+                    <button class="btn btn-primary btn-block" id="buyButton">立即秒杀</button>
+                    <input type="hidden" name="goodsId" id="goodsId"/>
                 </form>
             </td>
         </tr>
@@ -68,9 +68,28 @@
 </body>
 
 <script>
+
+    $("#buyButton").click(function () {
+        $.ajax({
+            url:"/miaosha/do_miaosha",
+            type:"POST",
+            data:{
+                goodsId:$("#goodsId").val()
+            },
+            success:function (data) {
+                layer.msg(data.data);
+            },
+            error:function () {
+                layer.msg("error");
+            }
+        });
+    });
+
+
+
     function render(detail){
         var miaoshaStatus = detail.miaoshaStatus;
-        var  remainTime = detail.remainSeconds;
+        var  remainTime = detail.remainTime;
         var goods = detail.good;
         var user = detail.user;
         if(user){
