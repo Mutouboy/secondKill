@@ -29,7 +29,6 @@ public class RabbitCfg {
     public static final String HEADERS_EXCHANGER = "headers-exchanger";
 
 
-
     @Bean
     public Queue queue(){
         return new Queue(QUEUE,true);

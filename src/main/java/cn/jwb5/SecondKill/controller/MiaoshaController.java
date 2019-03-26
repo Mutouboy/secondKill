@@ -2,6 +2,7 @@ package cn.jwb5.SecondKill.controller;
 
 import cn.jwb5.SecondKill.VO.GoodsVo;
 import cn.jwb5.SecondKill.constant.ErrorMsg;
+import cn.jwb5.SecondKill.intercepter.NeedLogin;
 import cn.jwb5.SecondKill.model.MiaoshaOrder;
 import cn.jwb5.SecondKill.model.OrderInfo;
 import cn.jwb5.SecondKill.model.User;
@@ -66,11 +67,12 @@ public class MiaoshaController implements InitializingBean{
      */
     @RequestMapping(value = "do_miaosha",method = RequestMethod.POST)
     @ResponseBody
+    @NeedLogin
     public Result doMiaosha(Model model, User user, @RequestParam("goodsId") long goodsId){
         //判断用户是否登录
-        if (user == null){
-            return Result.setError(ErrorMsg.NO_LOGIN);
-        }
+//        if (user == null){
+//            return Result.setError(ErrorMsg.NO_LOGIN);
+//        }
         //判断库存是否充足
         boolean over = miaoshaGoodsMap.get(goodsId);
         if (over){

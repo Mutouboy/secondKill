@@ -16,6 +16,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 
 /**
  * Created by jiangwenbin on 2019/1/9.
@@ -26,6 +27,7 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Autowired
     UserService userService;
+
 
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {

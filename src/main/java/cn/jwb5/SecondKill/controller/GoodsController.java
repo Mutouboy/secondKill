@@ -2,13 +2,10 @@ package cn.jwb5.SecondKill.controller;
 
 import cn.jwb5.SecondKill.VO.GoodsDetailVo;
 import cn.jwb5.SecondKill.VO.GoodsVo;
-import cn.jwb5.SecondKill.constant.ErrorMsg;
-import cn.jwb5.SecondKill.constant.UserConstant;
-import cn.jwb5.SecondKill.model.Goods;
+import cn.jwb5.SecondKill.intercepter.NeedLogin;
 import cn.jwb5.SecondKill.model.User;
 import cn.jwb5.SecondKill.redis.HtmlKey;
 import cn.jwb5.SecondKill.redis.RedisService;
-import cn.jwb5.SecondKill.redis.UserKey;
 import cn.jwb5.SecondKill.result.Result;
 import cn.jwb5.SecondKill.service.GoodsService;
 import cn.jwb5.SecondKill.service.UserService;
@@ -124,6 +121,7 @@ public class GoodsController {
 
     }
 
+    @NeedLogin
     @RequestMapping(value = "toDetail/{goodsId}")
     @ResponseBody
     public Result<GoodsDetailVo> toDetailStatic(User user, @PathVariable("goodsId") long goodsId){
